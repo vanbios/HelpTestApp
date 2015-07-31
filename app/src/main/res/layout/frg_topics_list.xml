@@ -1,0 +1,27 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/common_padding_small"
+    android:paddingRight="@dimen/common_padding_small"
+    android:paddingTop="@dimen/common_padding_medium"
+    android:paddingBottom="@dimen/common_padding_medium">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerTopics"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <TextView
+        android:id="@+id/tvEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Empty list"
+        style="@style/BodyFontSecondary"/>
+
+
+</RelativeLayout>
