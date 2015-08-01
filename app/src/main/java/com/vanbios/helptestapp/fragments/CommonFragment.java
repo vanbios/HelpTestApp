@@ -29,29 +29,8 @@ public abstract class CommonFragment extends Fragment {
         }
     }
 
-    public String getRealTag(){
-        return this.getClass().getName();
-    }
-
     protected void addFragment(CommonFragment f){
         ((MainActivity) getActivity()).addFragment(f);
-    }
-
-    /*protected void replaceFragment(CommonFragment f){
-        ((MainActivity) getActivity()).replaceFragment(f);
-    }*/
-
-    protected void finish(){
-        tryExecuteTransaction(new Runnable() {
-            @Override
-            public void run() {
-                getFragmentManager().popBackStack();
-            }
-        });
-    }
-
-    protected void popAll(){
-        getFragmentManager().popBackStack(1, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     public abstract String getTitle();
