@@ -23,7 +23,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SqlQueries.create_answers_table);
     }
 
-    // Method for update database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 

@@ -1,6 +1,5 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimary">@color/custom_teal</item>
@@ -15,7 +14,6 @@
         <item name="android:colorBackground">@color/custom_blue_gray</item>
         <item name="android:textColor">@color/custom_text_light</item>
     </style>
-
 
 
 
@@ -51,14 +49,6 @@
     </style>
 
 
-    <style name="SpinnerFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/text_size_spinner</item>
-        <item name="android:textColor">@color/custom_text_gray_dark</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
-
     <style name="SubheadFontSecondary" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">@dimen/text_size_subhead</item>
         <item name="android:textColor">@color/custom_text_secondary</item>
@@ -73,21 +63,6 @@
         <item name="android:textStyle">normal</item>
         <item name="android:typeface">sans</item>
     </style>
-
-
-    <style name="TitleBigFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/text_size_big</item>
-        <item name="android:textColor">@color/custom_text_gray_dark</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
-    <style name="TabsFont" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:typeface">sans</item>
-    </style>
-
 
 
 </resources>

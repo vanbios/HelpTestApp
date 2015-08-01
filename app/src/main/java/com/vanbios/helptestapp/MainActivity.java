@@ -11,7 +11,10 @@ import android.view.MenuItem;
 
 import com.vanbios.helptestapp.fragments.FrgDetail;
 import com.vanbios.helptestapp.fragments.FrgTopicsList;
+import com.vanbios.helptestapp.utils.InfoFromDB;
+import com.vanbios.helptestapp.utils.InternetTester;
 import com.vanbios.helptestapp.utils.ResultParser;
+import com.vanbios.helptestapp.utils.SharedPref;
 import com.vanbios.helptestapp.utils.ToastUtils;
 
 
@@ -32,7 +35,15 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
 
         setViews();
 
-        ResultParser.sendGetHelpReq(this);
+        SharedPref sharedPref = new SharedPref(this);
+        if (!sharedPref.getDataPresentStatus()) {
+
+            if (InternetTester.isConnectionEnabled(this) &&
+                    InfoFromDB.getInstance().getDataSource().getData().isEmpty()) {
+
+                ResultParser.sendGetHelpReq(this);
+            }
+        }
     }
 
     private void setViews() {
@@ -64,17 +75,17 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         }
     }
 
-    public void addFragment(Fragment f){
+    public void addFragment(Fragment f) {
         treatFragment(f, true, false);
     }
 
-    public Fragment getTopFragment(){
+    public Fragment getTopFragment() {
         return getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     }
 
-    private void treatFragment(Fragment f, boolean addToBackStack, boolean replace){
+    private void treatFragment(Fragment f, boolean addToBackStack, boolean replace) {
         String tag = f.getClass().getName();
-        FragmentTransaction ft =  getSupportFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         if (replace) {
             ft.replace(R.id.fragment_container, f, tag);
@@ -96,8 +107,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         Fragment topFragment = getTopFragment();
         if (topFragment instanceof FrgTopicsList) {
             setToolbar(getString(R.string.app_name), LIST_MODE);
-        }
-        else if (topFragment instanceof FrgDetail) {
+        } else if (topFragment instanceof FrgDetail) {
             setToolbar(((FrgDetail) topFragment).getTitle(), DETAIL_MODE);
         }
     }
@@ -114,9 +124,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
                 ToastUtils.showClosableToast(this, getString(R.string.press_again_to_exit), 1);
                 backPressExitTime = System.currentTimeMillis();
             }
-        }
-
-        else if (fragment instanceof FrgDetail) {
+        } else if (fragment instanceof FrgDetail) {
             popFragment();
         }
     }
@@ -124,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 Fragment fragment = getTopFragment();
                 if (fragment instanceof FrgDetail) {

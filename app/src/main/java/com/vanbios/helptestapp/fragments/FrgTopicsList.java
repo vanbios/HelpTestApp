@@ -1,9 +1,10 @@
 package com.vanbios.helptestapp.fragments;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,26 +18,20 @@ import com.vanbios.helptestapp.objects.Item;
 import com.vanbios.helptestapp.utils.InfoFromDB;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 
 public class FrgTopicsList extends CommonFragment {
 
-    public final static String BROADCAST_FRG_ACCOUNT_ACTION = "com.androidcollider.easyfin.frgaccount.broadcast";
-    public final static String PARAM_STATUS_FRG_ACCOUNT = "update_frg_account";
-    public final static int STATUS_UPDATE_FRG_ACCOUNT = 4;
+    public final static String BROADCAST_FRG_TOPICS_ACTION = "com.vanbios.helptestapp.fragments.frgtopicslist.broadcast";
+    public final static String PARAM_STATUS_FRG_TOPICS = "update_frg_topics";
+    public final static int STATUS_UPDATE_FRG_TOPICS = 1;
 
     private RecyclerView recyclerView;
-
     private LinkedHashMap<String, ArrayList<Item>> data;
-
     private TextView tvEmpty;
-
     private QuestionsRecyclerAdapter recyclerAdapter;
-
     private BroadcastReceiver broadcastReceiver;
-
 
 
     @Override
@@ -49,57 +44,63 @@ public class FrgTopicsList extends CommonFragment {
 
         setRecycler();
 
+        makeBroadcastReceiver();
+
         return view;
     }
-
 
     private void setRecycler() {
 
         data = InfoFromDB.getInstance().getDataSource().getData();
 
-        //setVisibility();
+        setVisibility();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerAdapter = new QuestionsRecyclerAdapter(data, getActivity());
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    public void openFrgDetail(Item item) {
-        FrgDetail frgDetail = new FrgDetail();
-        Bundle arguments = new Bundle();
-        arguments.putSerializable("item", item);
-        frgDetail.setArguments(arguments);
 
-        addFragment(frgDetail);
-    }
-
-
-
-    public void addFragment(Fragment f){
-        treatFragment(f, true, false);
-    }
-
-    public void replaceFragment(Fragment f){
-        treatFragment(f, false, true);
-    }
-
-    public Fragment getTopFragment(){
-        return getActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-    }
-
-    private void treatFragment(Fragment f, boolean addToBackStack, boolean replace){
-        String tag = f.getClass().getName();
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-        if (replace) {
-            ft.replace(R.id.fragment_container, f, tag);
+    private void setVisibility() {
+        if (data.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            tvEmpty.setVisibility(View.VISIBLE);
         } else {
-            Fragment currentTop = getTopFragment();
-            if (currentTop != null) ft.hide(currentTop);
-            ft.add(R.id.fragment_container, f, tag);
+            tvEmpty.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
-        if (addToBackStack) ft.addToBackStack(tag);
-        ft.commitAllowingStateLoss();
+    }
+
+    private void makeBroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int status = intent.getIntExtra(PARAM_STATUS_FRG_TOPICS, 0);
+
+                if (status == STATUS_UPDATE_FRG_TOPICS) {
+
+                    data.clear();
+
+                    LinkedHashMap<String, ArrayList<Item>> result = InfoFromDB.getInstance().getDataSource().getData();
+                    data.putAll(result);
+
+                    setVisibility();
+
+                    recyclerAdapter = new QuestionsRecyclerAdapter(data, getActivity());
+                    recyclerView.setAdapter(recyclerAdapter);
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_FRG_TOPICS_ACTION);
+
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     @Override

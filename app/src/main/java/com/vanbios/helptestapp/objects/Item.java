@@ -11,7 +11,7 @@ public class Item implements Serializable {
     private ArrayList<String> contentList;
 
 
-    public Item (int id, String title, String category, ArrayList<String> contentList) {
+    public Item(int id, String title, String category, ArrayList<String> contentList) {
         this.id = id;
         this.title = title;
         this.category = category;

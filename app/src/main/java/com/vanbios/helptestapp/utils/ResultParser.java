@@ -29,14 +29,14 @@ public class ResultParser {
 
         String tag_string_req = "string_req";
 
-        String url = "http://mocksvc.mulesoft.com/mocks/2b93657d-bbe5-4d4f-bd2f-cea2128712fb/mocks/8892f254-1de8-49bb-be7c-abe8cb154ab9/mocks/36c7af27-c2be-4ec5-976f-bb91d0eef09a/api/v1/help";
+        final String URL = "http://mocksvc.mulesoft.com/mocks/2b93657d-bbe5-4d4f-bd2f-cea2128712fb/mocks/8892f254-1de8-49bb-be7c-abe8cb154ab9/mocks/36c7af27-c2be-4ec5-976f-bb91d0eef09a/api/v1/help";
 
         final ProgressDialog pDialog = new ProgressDialog(context);
         pDialog.setMessage("Loading...");
         pDialog.show();
 
         StringRequest strReq = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+                URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -78,18 +78,16 @@ public class ResultParser {
                                     contentList.add(textContent);
                                 }
                             }
-                            Item itemObj = new Item (id, itemTitle, category, contentList);
+                            Item itemObj = new Item(id, itemTitle, category, contentList);
                             itemList.add(itemObj);
                         }
                         result.put(title, itemList);
                     }
 
                     InfoFromDB.getInstance().getDataSource().insertData(result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
                 pDialog.hide();
 
             }

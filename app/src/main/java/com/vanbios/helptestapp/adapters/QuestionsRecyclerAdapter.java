@@ -2,25 +2,23 @@ package com.vanbios.helptestapp.adapters;
 
 
 import android.content.Context;
+
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.vanbios.helptestapp.AppController;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.vanbios.helptestapp.MainActivity;
 import com.vanbios.helptestapp.R;
 import com.vanbios.helptestapp.fragments.FrgDetail;
-import com.vanbios.helptestapp.fragments.FrgTopicsList;
 import com.vanbios.helptestapp.objects.Item;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,7 +32,7 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
 
     private Context context;
 
-    final static int TYPE_HEADER = 0, TYPE_QUESTION = 1;
+    private final static int TYPE_HEADER = 0, TYPE_QUESTION = 1;
 
 
     public QuestionsRecyclerAdapter(LinkedHashMap<String, ArrayList<Item>> data, Context context) {
@@ -70,7 +68,6 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
         }
     }
 
-
     @Override
     public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -87,16 +84,30 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     public void onBindViewHolder(MainViewHolder holder, int position) {
 
         if (holder instanceof ViewHolderItemHeader) {
+
+            final String URL_IMAGE_1 = "http://504080.com/img/help/account_management.png";
+            final String URL_IMAGE_2 = "http://504080.com/img/help/companies.png";
+
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                    .cacheOnDisc(true).resetViewBeforeLoading(true)
+                    .build();
+
             for (int i = 0; i < headersPosList.size(); i++) {
                 if (headersPosList.get(i) == position) {
                     String head = headersList.get(i);
                     ((ViewHolderItemHeader) holder).tvHead.setText(head);
+
+                    if (i == 0) {
+                        imageLoader.displayImage(URL_IMAGE_1, ((ViewHolderItemHeader) holder).ivHead, options);
+                    } else {
+                        imageLoader.displayImage(URL_IMAGE_2, ((ViewHolderItemHeader) holder).ivHead, options);
+                    }
                     break;
                 }
             }
-        }
 
-        else if (holder instanceof ViewHolderItemQuestion) {
+        } else if (holder instanceof ViewHolderItemQuestion) {
             ViewHolderItemQuestion holderQuestion = (ViewHolderItemQuestion) holder;
 
             for (int i = 0; i < questionsPosList.size(); i++) {
@@ -145,8 +156,8 @@ public class QuestionsRecyclerAdapter extends RecyclerView.Adapter<QuestionsRecy
     }
 
     static class MainViewHolder extends RecyclerView.ViewHolder {
-        public MainViewHolder (View view) {
-            super (view);
+        public MainViewHolder(View view) {
+            super(view);
         }
     }
 
