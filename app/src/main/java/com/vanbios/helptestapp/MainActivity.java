@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements FragmentManager.O
         if (!sharedPref.getDataPresentStatus()) {
 
             if (InternetTester.isConnectionEnabled(this) &&
-                    InfoFromDB.getInstance().getDataSource().getData().isEmpty()) {
+                    InfoFromDB.getInstance().getDataSrc().getData().isEmpty()) {
 
                 ResultParser.sendGetHelpReq(this);
             }

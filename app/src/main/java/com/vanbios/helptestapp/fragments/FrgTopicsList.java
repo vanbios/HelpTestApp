@@ -51,7 +51,7 @@ public class FrgTopicsList extends CommonFragment {
 
     private void setRecycler() {
 
-        data = InfoFromDB.getInstance().getDataSource().getData();
+        data = InfoFromDB.getInstance().getDataSrc().getData();
 
         setVisibility();
 
@@ -81,7 +81,7 @@ public class FrgTopicsList extends CommonFragment {
 
                     data.clear();
 
-                    LinkedHashMap<String, ArrayList<Item>> result = InfoFromDB.getInstance().getDataSource().getData();
+                    LinkedHashMap<String, ArrayList<Item>> result = InfoFromDB.getInstance().getDataSrc().getData();
                     data.putAll(result);
 
                     setVisibility();

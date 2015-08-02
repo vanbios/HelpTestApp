@@ -84,7 +84,7 @@ public class ResultParser {
                         result.put(title, itemList);
                     }
 
-                    InfoFromDB.getInstance().getDataSource().insertData(result);
+                    InfoFromDB.getInstance().getDataSrc().insertData(result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

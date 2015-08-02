@@ -1,18 +1,18 @@
 package com.vanbios.helptestapp.utils;
 
 import com.vanbios.helptestapp.AppController;
-import com.vanbios.helptestapp.database.DataSource;
+import com.vanbios.helptestapp.database.DataSrc;
 
 
 public class InfoFromDB {
 
-    private final DataSource dataSource = new DataSource(AppController.getContext());
+    private final DataSrc dataSrc = new DataSrc(AppController.getContext());
 
     private static volatile InfoFromDB instance;
 
 
-    public DataSource getDataSource() {
-        return dataSource;
+    public DataSrc getDataSrc() {
+        return dataSrc;
     }
 
     public static InfoFromDB getInstance() {
